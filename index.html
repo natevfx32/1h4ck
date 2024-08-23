@@ -80,12 +80,11 @@
             responseElement.className = 'message';
 
             try {
-                const response = await fetch('https://fire-beautiful-thyme.glitch.me', {
+                const response = await fetch('https://your-glitch-app-url/real?key=' + encodeURIComponent(key), {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ key }),
+                    }
                 });
 
                 const result = await response.json();
