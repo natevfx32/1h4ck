@@ -1,1 +1,1 @@
-/key       https://fire-beautiful-thyme.glitch.me/real?key=' + encodeURIComponent(key)
+/key/*  https://fire-beautiful-thyme.glitch.me/real?key=:splat  200
