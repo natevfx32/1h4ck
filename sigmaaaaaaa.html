@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111111;
+            color: white;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #222222;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #333;
+            color: white;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C70000;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #a60000;
+        }
+        .small-text {
+            color: #919191;
+            font-size: 12px;
+        }
+        .message {
+            margin-top: 10px;
+        }
+        .error {
+            color: #F00003;
+        }
+        .success {
+            color: #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Redeem Key</h1>
+        <input type="text" id="key" placeholder="Enter your redeem key" required>
+        <button id="redeem-btn">Redeem</button>
+        <p class="small-text">You will be asked to login with your Discord account in order to link the license key to it for security.</p>
+        <p id="response" class="message"></p>
+    </div>
+
+    <script>
+        document.getElementById('redeem-btn').addEventListener('click', async () => {
+            const key = document.getElementById('key').value.trim();
+            const responseElement = document.getElementById('response');
+
+            if (key.length < 6) {
+                responseElement.textContent = 'Key too short';
+                responseElement.className = 'message error';
+                return;
+            }
+
+            responseElement.textContent = 'Waiting for a response...';
+            responseElement.className = 'message';
+
+            try {
+                const response = await fetch('https://fire-beautiful-thyme.glitch.me', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ key }),
+                });
+
+                const result = await response.json();
+
+                if (result.valid) {
+                    responseElement.textContent = 'Correct key, welcome back to 1hack!';
+                    responseElement.className = 'message success';
+                } else {
+                    responseElement.textContent = 'Invalid key';
+                    responseElement.className = 'message error';
+                }
+            } catch (error) {
+                responseElement.textContent = 'Error validating key';
+                responseElement.className = 'message error';
+            }
+        });
+    </script>
+</body>
+</html>
