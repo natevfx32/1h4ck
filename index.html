@@ -94,11 +94,16 @@
                 const result = await response.json();
 
                 if (result.valid) {
-                    const expirationDate = new Date(result.expirationDate).toLocaleString();
-                    responseElement.innerHTML = `Correct key, welcome back to 1hack!<br>Key Expires: ${expirationDate}`;
+                    const expirationDate = new Date(result.expirationDate);
+                    // Check if the date is valid
+                    const isValidDate = !isNaN(expirationDate.getTime());
+                    const formattedDate = isValidDate ? expirationDate.toLocaleString() : 'Invalid Date';
+                    responseElement.innerHTML = `Correct key, welcome back to 1hack!<br>Key Expires: ${formattedDate}`;
                     responseElement.className = 'message success';
                 } else {
-                    responseElement.textContent = `Invalid key${result.expirationDate ? `<br>Key Expires: ${new Date(result.expirationDate).toLocaleString()}` : ''}`;
+                    const expirationDate = result.expirationDate ? new Date(result.expirationDate) : null;
+                    const formattedDate = expirationDate && !isNaN(expirationDate.getTime()) ? expirationDate.toLocaleString() : 'Unknown';
+                    responseElement.innerHTML = `Invalid key<br>Key Expires: ${formattedDate}`;
                     responseElement.className = 'message error';
                 }
             } catch (error) {
